@@ -19,7 +19,7 @@ pipeline {
         stage('Deploy') {
           steps {
               withCredentials([sshUserPrivateKey(credentialsId: 'mykey', keyFileVariable: 'FILENAME', usernameVariable: 'USERNAME')]) {
-                sh 'ansible-playbook --inventory hosts.ini --key-file ${FILENAME} playbook.yaml' 
+                sh 'ANSIBLE_SSH_KEY_CHECKING=False ansible-playbook --inventory hosts.ini --key-file ${FILENAME} playbook.yaml' 
             }
           }
         }
