@@ -16,18 +16,10 @@ pipeline {
                 sh "go build main.go"
             }
         }
-        stage('Deploy') {
-          steps {
-              withCredentials([sshUserPrivateKey(credentialsId: 'mykey', keyFileVariable: 'FILENAME', usernameVariable: 'USERNAME')]) {
-                sh 'ssh -o StrictHostKeyChecking=no -i ${FILENAME} ${USERNAME}@target "sudo systemctl stop myapp" || true' 
-                sh 'scp -o StrictHostKeyChecking=no -i ${FILENAME} main ${USERNAME}@target:'
-
-                // create a configuration file for systemd myapp.
-                // sh 'ssh -o StrictHostKeyChecking=no -i ${FILENAME} ${USERNAME}@target "xxxxxx" || true' 
-
-                // sh 'ssh -o StrictHostKeyChecking=no -i ${FILENAME} ${USERNAME}@target "sudo systemctl start myapp"' 
+        stage('Build Docker Image') {
+            steps {
+                sh "docker build . --tag myapp"
             }
-          }
         }
     }
 }
