@@ -18,7 +18,12 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh "docker build . --tag myapp"
+                sh "docker build . --tag ttl.sh/myapp:1h"
+            }
+        }
+        stage('Docker Run Image') {
+            steps {
+                sh "ssh laborant@docker 'docker run --detach --publish 4444:4444 ttl.sh/myapp:1h'"
             }
         }
     }
