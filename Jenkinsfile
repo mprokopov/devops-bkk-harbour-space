@@ -23,7 +23,9 @@ pipeline {
         }
         stage('Docker Run Image') {
             steps {
-                sh "ssh laborant@docker 'docker run --detach --publish 4444:4444 ttl.sh/myapp:1h'"
+                withCredentials([sshUserPrivateKey(credentialsId: 'mykey', keyFileVariable: 'FILENAME', usernameVariable: 'USERNAME')]) {
+                  sh "ssh -o StrictHostKeyChecking=no -i ${FILENAME} ${USERNAME}@docker 'docker run --detach --publish 4444:4444 ttl.sh/myapp:1h'"
+               }
             }
         }
     }
