@@ -21,6 +21,11 @@ pipeline {
                 sh "docker build . --tag ttl.sh/myapp2:1h"
             }
         }
+        stage('Build Push Image') {
+            steps {
+                sh "docker push ttl.sh/myapp2:1h"
+            }
+        }
         stage('Docker Run Image') {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'mykey', keyFileVariable: 'FILENAME', usernameVariable: 'USERNAME')]) {
