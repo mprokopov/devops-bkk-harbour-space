@@ -30,6 +30,17 @@ jobs:
         echo "${{ secrets.MYKEY }}" > ~/.ssh/mykey
         
         chmod 600 ~/.ssh/mykey
+
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/mykey laborant@target "sudo systemctl stop myapp" || true
         
         scp -o StrictHostKeyChecking=no -i ~/.ssh/mykey main laborant@target:
+
+        scp -o StrictHostKeyChecking=no -i ~/.ssh/mykey myapp.service laborant@target:
+
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/mykey laborant@target "sudo mv ~/myapp.service /etc/systemd/system"
+
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/mykey laborant@target "sudo systemctl daemon-reload"
+        
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/mykey laborant@target "sudo systemctl start myapp"
+        
 
