@@ -26,9 +26,10 @@ jobs:
       run: go build main.go
       
     - name: Deploy
-      run: >
+      run: |
         echo "${{ secrets.MYKEY }}" > ~/.ssh/mykey
+        
         chmod 600 ~/.ssh/mykey
-        cat ~/.ssh/mykey
+        
         scp -o StrictHostKeyChecking=no -i ~/.ssh/mykey main laborant@target:
 
